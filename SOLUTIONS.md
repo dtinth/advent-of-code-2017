@@ -17,3 +17,14 @@
     ```ruby
     -> x { x.lines.map { |l| l.split.map(&:to_i).permutation(2).find { |a, b| a % b == 0 }.reduce(&:/) }.reduce(&:+) }[`pbpaste`]
     ```
+
+
+4. **High-Entropy Passphrases**
+
+    ```ruby
+    -> x { x.lines.map(&:split).count { |w| w.uniq.length == w.length } }[`pbpaste`]
+    ```
+
+    ```ruby
+    -> x { x.lines.map { |l| l.split.map(&:chars).map(&:sort) }.count { |w| w.uniq == w } }[`pbpaste`]
+    ```
