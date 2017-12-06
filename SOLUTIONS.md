@@ -18,6 +18,11 @@
     -> x { x.lines.map { |l| l.split.map(&:to_i).permutation(2).find { |a, b| a % b == 0 }.reduce(&:/) }.reduce(&:+) }[`pbpaste`]
     ```
 
+3. **Spiral Memory**
+
+    ```ruby
+    -> x { c = Math.sqrt(x - 1).floor; i = (x - (c ** 2 + 1)) % (c + 1); ((c + 1) / 2) + ((c - 1) / 2 - i).abs }[`pbpaste`.to_i]
+    ```
 
 4. **High-Entropy Passphrases**
 
