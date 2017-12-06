@@ -42,3 +42,14 @@
     ```ruby
     -> a { c = n = 0; while (0...a.length).include?(c); c += a[i = c]; a[i] += (a[i] >= 3 ? -1 : 1); n += 1; end; n }[`pbpaste`.split.map(&:to_i)]
     ```
+6. **Memory Reallocation**
+
+    ```ruby
+    nx = -> x { max = x.max; m = x.index(max); n = x.dup; n[m] = 0; (m + 1...m + 1 + max).map { |i| i % x.length }.each { |i| n[i] += 1 }; n }
+    -> a { seen = { }; c = 0; while !seen[a]; c += 1; seen[a] = true; a = nx[a]; end; c }[`pbpaste`.split.map(&:to_i)]
+    ```
+
+    ```ruby
+    nx = -> x { max = x.max; m = x.index(max); n = x.dup; n[m] = 0; (m + 1...m + 1 + max).map { |i| i % x.length }.each { |i| n[i] += 1 }; n }
+    -> a { seen = { }; c = 0; while !seen[a]; c += 1; seen[a] = c; a = nx[a]; end; c - seen[a] + 1 }[`pbpaste`.split.map(&:to_i)]
+    ```
