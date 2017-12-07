@@ -1,4 +1,4 @@
-**Ruby REPL** solution. The `pbpaste` command must be available in the `$PATH`, and should return the contents in the clipboard (macOS has this command by default).
+**Ruby REPL** (irb) solution. The `pbpaste` command must be available in the `$PATH`, and should return the contents in the clipboard (macOS has this command by default).
 
 1. **Inverse Captcha**
 
@@ -74,5 +74,19 @@
     # Use this to find the nodes with unbalanced child weight
     c.select { |n, ch| ch.map(&wei).uniq.length > 1 }
     
-    # The rest can be figured out manually using the REPL
+    # The final answer can be found by manually inspecting weights in the REPL. Here’s mine:
+    # 2.4.1 :085 > wei['nieyygi']
+    #  => 11781
+    # 2.4.1 :086 > wei['mxgpbvf']
+    #  => 1117
+    # 2.4.1 :087 > wei['cfqdsb']
+    #  => 1117
+    # 2.4.1 :088 > wei['yfejqb']
+    #  => 1117
+    # 2.4.1 :089 > wei['ptshtrn']
+    #  => 1122
+    # 2.4.1 :090 > s['ptshtrn']
+    #  => 526
+    # 2.4.1 :091 > 526 - (1117 - 1122)
+    #  => 521
     ```
