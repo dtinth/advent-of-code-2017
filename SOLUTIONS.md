@@ -1,3 +1,5 @@
+**Ruby REPL** solution. The `pbpaste` command must be available in the `$PATH`, and should return the contents in the clipboard (macOS has this command by default).
+
 1. **Inverse Captcha**
 
     ```ruby
