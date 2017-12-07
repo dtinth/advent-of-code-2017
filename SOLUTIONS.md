@@ -26,7 +26,7 @@
     -> x { c = Math.sqrt(x - 1).floor; i = (x - (c ** 2 + 1)) % (c + 1); ((c + 1) / 2) + ((c - 1) / 2 - i).abs }[`pbpaste`.to_i]
     
     # Rewritten with more straightforward logic to prepare for part 2.
-    -> n {x = y = 0; dx, dy = 1, 0; (2..n).each { x += dx; y += dy; dx, dy = 0, 1 if x > 0 && y == -x + 1; dx, dy = -1, 0 if x > 0 && y == x; dx, dy = 0, -1 if x < 0 && y == -x; dx, dy = 1, 0 if x < 0 && y == x; }; [x, y] }[`pbpaste`.to_i]
+    -> n { x = y = 0; dx, dy = 1, 0; (2..n).each { x += dx; y += dy; dx, dy = 0, 1 if x > 0 && y == -x + 1; dx, dy = -1, 0 if x > 0 && y == x; dx, dy = 0, -1 if x < 0 && y == -x; dx, dy = 1, 0 if x < 0 && y == x; }; [x, y] }[`pbpaste`.to_i]
     ```
     
     ```ruby
