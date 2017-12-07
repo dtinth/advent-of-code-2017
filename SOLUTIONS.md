@@ -53,3 +53,24 @@
     nx = -> x { max = x.max; m = x.index(max); n = x.dup; n[m] = 0; (m + 1...m + 1 + max).map { |i| i % x.length }.each { |i| n[i] += 1 }; n }
     -> a { seen = { }; c = 0; while !seen[a]; c += 1; seen[a] = c; a = nx[a]; end; c - seen[a] + 1 }[`pbpaste`.split.map(&:to_i)]
     ```
+
+7. **Recursive Circus**
+
+    ```ruby
+    -> x { s = {}; p = {}; x.scan(/(\w+).*?->\s*(.+)/).each { |a, b| b.strip.split(', ').each{|n|p[n]=a}; s[a]=1 }; s.keys.select{|z|!p[z]} }[`pbpaste`]
+    ```
+
+    ```ruby
+    s = {}; p = {}; c = {}; `pbpaste`.scan(/(\w+) \((\d+)\)(?: -> )?(.*)/).each { |a, w, b| b.length > 0 && b.strip.split(', ').each{|n|p[n]=a; (c[a]||=[]) << n}; s[a]=w.to_i }
+    wei = -> n { s[n] + (c[n] || []).map(&wei).reduce(0, &:+) }
+    
+    # s['name'] -> Weight of the program
+    # p['name'] -> Name of the program’s parent (or nil)
+    # c['name'] -> List of the program’s children
+    # wei['name'] -> Weight of the program, including all its children.
+    
+    # Use this to find the nodes with unbalanced child weight
+    c.select { |n, ch| ch.map(&wei).uniq.length > 1 }
+    
+    # The rest can be figured out manually using the REPL
+    ```
