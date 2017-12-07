@@ -28,6 +28,10 @@
     # Rewritten with more straightforward logic to prepare for part 2.
     -> n {x = y = 0; dx, dy = 1, 0; (2..n).each { x += dx; y += dy; dx, dy = 0, 1 if x > 0 && y == -x + 1; dx, dy = -1, 0 if x > 0 && y == x; dx, dy = 0, -1 if x < 0 && y == -x; dx, dy = 1, 0 if x < 0 && y == x; }; [x, y] }[`pbpaste`.to_i]
     ```
+    
+    ```ruby
+    -> n { v = Hash.new(0); v[[0, 0]] = 1; x = y = 0; dx, dy = 1, 0; loop { x += dx; y += dy; dx, dy = 0, 1 if x > 0 && y == -x + 1; dx, dy = -1, 0 if x > 0 && y == x; dx, dy = 0, -1 if x < 0 && y == -x; dx, dy = 1, 0 if x < 0 && y == x; v[[x, y]] = (-1..1).map { |i| (-1..1).map { |j| v[[x+i,y+j]] } }.flatten.reduce(0, &:+); return v[[x, y]] if v[[x, y]] > n } }[`pbpaste`.to_i]
+    ```
 
 4. **High-Entropy Passphrases**
 
