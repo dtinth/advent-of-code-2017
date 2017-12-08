@@ -91,10 +91,10 @@
 
     wei = -> n { s[n] + (c[n] || []).map(&wei).reduce(0, &:+) }
     # wei['name'] -> Weight of the program, including all its children.
-    
+
     # Use this to find the nodes with unbalanced child weight
     c.select { |n, ch| ch.map(&wei).uniq.length > 1 }
-    
+
     # The final answer can be found by manually inspecting weights in the REPL. Here’s mine:
     # 2.4.1 :085 > wei['nieyygi']
     #  => 11781
@@ -110,4 +110,18 @@
     #  => 526
     # 2.4.1 :091 > 526 - (1117 - 1122)
     #  => 521
+    ```
+
+8. **I Heard You Like Registers** (13th, 26th)
+
+    I heard you like eval.
+
+    ```ruby
+    # Part 1
+    -> x { d = Hash.new(0); eval x.gsub(/(\w+) (inc|dec) (-?\d+) if (\w+) (\S+) (\S+)/) { "d['#{$1}'] #{$2 == 'inc' ? '+=' : '-='} #{$3} if d['#{$4}'] #{$5} #{$6}" }; d.values.max }[`pbpaste`]
+    ```
+
+    ```ruby
+    # Part 2
+    -> x { d = Hash.new(0); m = 0; eval x.gsub(/(\w+) (inc|dec) (-?\d+) if (\w+) (\S+) (\S+)/) { "d['#{$1}'] #{$2 == 'inc' ? '+=' : '-='} #{$3} if d['#{$4}'] #{$5} #{$6}; m = [m, d.values.max || 0].max" }; m }[`pbpaste`]
     ```
