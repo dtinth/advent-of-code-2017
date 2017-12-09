@@ -125,3 +125,13 @@
     # Part 2
     -> x { d = Hash.new(0); m = 0; eval x.gsub(/(\w+) (inc|dec) (-?\d+) if (\w+) (\S+) (\S+)/) { "d['#{$1}'] #{$2 == 'inc' ? '+=' : '-='} #{$3} if d['#{$4}'] #{$5} #{$6}; m = [m, d.values.max || 0].max" }; m }[`pbpaste`]
     ```
+
+9. **Stream Processing** (16th, 15th)
+
+    ```ruby
+    -> x { g = false; n = 0; t = 0; s = false; x.chars.each { |c| if s; s = false; elsif g && c == '>'; g = false; elsif g && c == '!'; s = true; elsif g; elsif c == '<'; g = true; elsif c == '{'; n += 1; elsif c == '}'; t += n; n -= 1; end }; t }[`pbpaste`]
+    ```
+
+    ```ruby
+    -> x { g = false; n = 0; t = 0; gc = 0; s = false; x.chars.each { |c| if s; s = false; elsif g && c == '>'; g = false; elsif g && c == '!'; s = true; elsif g; gc += 1; elsif c == '<'; g = true; elsif c == '{'; n += 1; elsif c == '}'; t += n; n -= 1; end }; gc }[`pbpaste`]
+    ```
