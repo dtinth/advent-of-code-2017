@@ -135,3 +135,15 @@
     ```ruby
     -> x { g = false; n = 0; t = 0; gc = 0; s = false; x.chars.each { |c| if s; s = false; elsif g && c == '>'; g = false; elsif g && c == '!'; s = true; elsif g; gc += 1; elsif c == '<'; g = true; elsif c == '{'; n += 1; elsif c == '}'; t += n; n -= 1; end }; gc }[`pbpaste`]
     ```
+
+10. **Knot Hash**
+
+    ```ruby
+    # Part 1
+    -> n, a { d = (0...n).to_a; r = 0; skip = 0; a.each { |c| d[0...c] = d[0...c].reverse; d = d.rotate(c + skip); r += c + skip; skip += 1; p d.rotate(n - (r % n)) }; r = d.rotate(n - (r % n)); r[0] * r[1] }[256, `pbpaste`.split(',').map(&:to_i)]
+    ```
+
+    ```ruby
+    # Part 2
+    -> n, a { d = (0...n).to_a; r = 0; skip = 0; 64.times { a.each { |c| d[0...c] = d[0...c].reverse; d = d.rotate(c + skip); r += c + skip; skip += 1; }; }; r = d.rotate(n - (r % n)); r.each_slice(16).map { |s| "%02x" % s.reduce(&:^) }.join }[256, [*`pbpaste`.strip.bytes, 17, 31, 73, 47, 23]]
+    ```
