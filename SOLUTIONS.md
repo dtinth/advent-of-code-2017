@@ -147,3 +147,29 @@
     # Part 2
     -> n, a { d = (0...n).to_a; r = 0; skip = 0; 64.times { a.each { |c| d[0...c] = d[0...c].reverse; d = d.rotate(c + skip); r += c + skip; skip += 1; }; }; r = d.rotate(n - (r % n)); r.each_slice(16).map { |s| "%02x" % s.reduce(&:^) }.join }[256, [*`pbpaste`.strip.bytes, 17, 31, 73, 47, 23]]
     ```
+
+11. **Hex Ed**
+
+    ```ruby
+    # Part 1
+    -> a { x = y = 0; a.each { |c| if c == 'ne'; y += 1; x += 1; elsif c == 'se'; y -= 1; x += 1; elsif c == 'nw'; y += 1; x -= 1; elsif c == 'sw'; y -= 1; x -= 1; elsif c == 's'; y -= 2; elsif c == 'n'; y += 2; end }; x.abs + [(y.abs - x.abs) / 2, 0].max }[ `pbpaste`.strip.split(',') ]
+    ```
+
+    ```ruby
+    # Part 2
+    -> a { x = y = 0; a.map { |c| if c == 'ne'; y += 1; x += 1; elsif c == 'se'; y -= 1; x += 1; elsif c == 'nw'; y += 1; x -= 1; elsif c == 'sw'; y -= 1; x -= 1; elsif c == 's'; y -= 2; elsif c == 'n'; y += 2; end; x.abs + [(y.abs - x.abs) / 2, 0].max }.max }[ `pbpaste`.strip.split(',') ]
+    ```
+
+    Made lots of mistake today and didn’t get into the leaderboard.
+    So, for fun, I’d just try to make the solution “single-statement,” i.e.
+    not using any statement terminator (newlines or `;`)..
+
+    ```ruby
+    # Part 1
+    -> a { -> ((x, y)) { x.abs + [0, (y.abs - x.abs) / 2].max }[a.map { |c| { 'ne' => [1, 1], 'nw' => [-1, 1], 'se' => [1, -1], 'sw' => [-1, -1], 's' => [0, -2], 'n' => [0, 2] }[c] }.transpose.map { |v| v.reduce(&:+) }] }[ `pbpaste`.strip.split(',') ]
+    ```
+
+    ```ruby
+    # Part 2
+    -> a { a.map { |c| { 'ne' => [1, 1], 'nw' => [-1, 1], 'se' => [1, -1], 'sw' => [-1, -1], 's' => [0, -2], 'n' => [0, 2] }[c] }.reduce ([[0, 0]]) { |a, (x, y)| a << [a.last[0] + x, a.last[1] + y] } }[ `pbpaste`.strip.split(',') ].map { |x, y| x.abs + [0, (y.abs - x.abs) / 2].max }.max
+    ```
