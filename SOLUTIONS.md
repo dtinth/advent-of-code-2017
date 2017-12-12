@@ -173,3 +173,20 @@
     # Part 2
     -> a { a.map { |c| { 'ne' => [1, 1], 'nw' => [-1, 1], 'se' => [1, -1], 'sw' => [-1, -1], 's' => [0, -2], 'n' => [0, 2] }[c] }.reduce ([[0, 0]]) { |a, (x, y)| a << [a.last[0] + x, a.last[1] + y] } }[ `pbpaste`.strip.split(',') ].map { |x, y| x.abs + [0, (y.abs - x.abs) / 2].max }.max
     ```
+
+12. **Digital Plumber**
+
+    ```ruby
+    # Load input into REPL session
+    data = -> h { h.keys { |k| h[k].dup.each { |z| h[z] << k } }; h }[Hash[`pbpaste`.lines.map { |l| a, b = l.split('<->').map(&:strip); [a.to_i, b.split(', ').map(&:to_i)] }]]
+    ```
+
+    ```ruby
+    # Part 1
+    visited = { }; g = -> x { return if visited[x]; visited[x] = true; data[x].each(&g) }; g[0]; visited.keys.length
+    ```
+
+    ```ruby
+    # Part 2
+    visited = { }; g = -> x { return if visited[x]; visited[x] = true; data[x].each(&g) }; (0..1999).count { |z| f = !visited[z]; g[z]; f }
+    ```
