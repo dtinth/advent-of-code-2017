@@ -190,3 +190,21 @@
     # Part 2
     visited = { }; g = -> x { return if visited[x]; visited[x] = true; data[x].each(&g) }; (0..1999).count { |z| f = !visited[z]; g[z]; f }
     ```
+
+13. **Packet Scanners**
+
+    ```ruby
+    # Load input into REPL session
+    f = Hash[`pbpaste`.scan(/(\d+): (\d+)/).map { |x| x.map(&:to_i) }]
+    ```
+
+    ```ruby
+    # Part 1
+    d = Hash[f.map { |a, c| [a, [c, 0, 1]] }]; (0..f.keys.max).map { |c| hit = d[c] && d[c][1] == 0; d.each { |k, v| d[k] = s[v] }; hit ? c * d[c][0] : 0 }.reduce(&:+)
+    ```
+
+    ```ruby
+    # Part 2
+    pos = -> a, t { g = t % (a * 2 - 2); [g, (a * 2 - 2) - g].min }
+    (0..4000000000).find { |d| v = f.keys.count { |k| pos[f[k], k + d] == 0 }; p [d, v] if d % 10000 == 0; v == 0 }
+    ```
