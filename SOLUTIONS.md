@@ -208,3 +208,21 @@
     pos = -> a, t { g = t % (a * 2 - 2); [g, (a * 2 - 2) - g].min }
     (0..4000000000).find { |d| v = f.keys.count { |k| pos[f[k], k + d] == 0 }; p [d, v] if d % 10000 == 0; v == 0 }
     ```
+
+14. **Disk Defragmentation**
+
+    ```ruby
+    # Loading data into REPL session
+    kh = -> tx { -> n, a { d = (0...n).to_a; r = 0; skip = 0; 64.times { a.each { |c| d[0...c] = d[0...c].reverse; d = d.rotate(c + skip); r += c + skip; skip += 1; }; }; r = d.rotate(n - (r % n)); r.each_slice(16).map { |s| "%02x" % s.reduce(&:^) }.join }[256, [*tx.strip.bytes, 17, 31, 73, 47, 23]] }
+    bits = (0...128).map { |i| kh["flqrgnkx-#{i}"].to_i(16).to_s(2).rjust(128, '0') }
+    ```
+
+    ```ruby
+    # Part 1
+    bits.join.count('1')
+    ```
+
+    ```ruby
+    # Part 2
+    visit = Hash.new(false); v = -> i, j { return if i < 0 || i >= 128 || j < 0 || j >= 128 || visit[[i, j]] || bits[i][j] != '1'; visit[[i, j]] = true; v[i + 1, j]; v[i - 1, j]; v[i, j + 1]; v[i, j - 1] }; cn = 0; (0...128).each { |i| (0...128).each { |j| unless visit[[i, j]] || bits[i][j] != '1'; v[i, j]; cn += 1; end } }; cn
+    ```
