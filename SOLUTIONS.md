@@ -226,3 +226,15 @@
     # Part 2
     visit = Hash.new(false); v = -> i, j { return if i < 0 || i >= 128 || j < 0 || j >= 128 || visit[[i, j]] || bits[i][j] != '1'; visit[[i, j]] = true; v[i + 1, j]; v[i - 1, j]; v[i, j + 1]; v[i, j - 1] }; cn = 0; (0...128).each { |i| (0...128).each { |j| unless visit[[i, j]] || bits[i][j] != '1'; v[i, j]; cn += 1; end } }; cn
     ```
+
+15. **Dueling Generators**
+
+    ```ruby
+    # Part 1
+    a, b = 65, 8921; z = 0; 40000000.times { |i| p [i, z] if i % 500000 == 0; a *= 16807; b *= 48271; a %= 2147483647; b %= 2147483647; if (a & 0xFFFF) == (b & 0xFFFF); z += 1; p i; end }; z
+    ```
+
+    ```ruby
+    # Part 2
+    a, b = 65, 8921; z = 0; 5000000.times { |i| p [i, z] if i % 100000 == 0; loop { a *= 16807; a %= 2147483647; break if a % 4 == 0 }; loop { b *= 48271; b %= 2147483647; break if b % 8 == 0 }; if (a & 0xFFFF) == (b & 0xFFFF); z += 1; p i; end }; z
+    ```
