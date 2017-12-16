@@ -238,3 +238,10 @@
     # Part 2
     a, b = 65, 8921; z = 0; 5000000.times { |i| p [i, z] if i % 100000 == 0; loop { a *= 16807; a %= 2147483647; break if a % 4 == 0 }; loop { b *= 48271; b %= 2147483647; break if b % 8 == 0 }; if (a & 0xFFFF) == (b & 0xFFFF); z += 1; p i; end }; z
     ```
+
+16. **Permutation Promenade**
+
+    ```ruby
+    # Part 1
+    -> d, a { a.each { |x| if x =~ /^s(\d+)/; d.rotate!(-$1.to_i); elsif x =~ /^x(\d+)\/(\d+)/; d[$1.to_i], d[$2.to_i]=  d[$2.to_i], d[$1.to_i] ; elsif x =~ /^p(.)\/(.)/; ia = d.index($1); ib = d.index($2); d[ia], d[ib]=  d[ib], d[ia] end; p d.join }; d.join } ['abcdefghijklmnop'.chars, `pbpaste`.strip.split(',')]
+    ```
