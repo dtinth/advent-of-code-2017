@@ -245,3 +245,41 @@
     # Part 1
     -> d, a { a.each { |x| if x =~ /^s(\d+)/; d.rotate!(-$1.to_i); elsif x =~ /^x(\d+)\/(\d+)/; d[$1.to_i], d[$2.to_i]=  d[$2.to_i], d[$1.to_i] ; elsif x =~ /^p(.)\/(.)/; ia = d.index($1); ib = d.index($2); d[ia], d[ib]=  d[ib], d[ia] end; p d.join }; d.join } ['abcdefghijklmnop'.chars, `pbpaste`.strip.split(',')]
     ```
+
+17. **Spinlock**
+
+    ```ruby
+    # Part 1
+    -> v { a = [0]; x = 0; (1..2017).each { |c| x += v; x %= a.length; x += 1; a[x, 0] = [c]; }; a[(x + 1) % a.length] }[3]
+    ```
+
+    I couldn’t think of a [more efficient solution](https://www.reddit.com/r/adventofcode/comments/7kc0xw/2017_day_17_solutions/drd5yek/?utm_content=permalink&utm_medium=front&utm_source=reddit&utm_name=adventofcode), so I brute-forced this in C.
+
+    ```c
+    #include <stdio.h>
+    struct N {
+      struct N* next;
+      int val;
+    };
+    struct N heap[50000001];
+    int main () {
+      struct N first;
+      struct N *cur = &first;
+      int vv = 0;
+      first.val = 0;
+      first.next = &first;
+      int i, j;
+      for (i = 1; i <= 50000000; i ++) {
+        if (i % 10000 == 0) { printf("[%d]\n", i); }
+        for (j = 0; j < 3; j ++) cur = cur->next;
+        struct N *v = &heap[vv++];
+        v->val = i;
+        v->next = cur->next;
+        cur->next = v;
+        cur = v;
+      }
+      struct N *it = &first;
+      printf("after first %d\n", first.next->val);
+      return 0;
+    }
+    ```
