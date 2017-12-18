@@ -283,3 +283,69 @@
       return 0;
     }
     ```
+
+18. **Duet**
+
+    Code for part 1 was lost :sob: but it’s written in Ruby.
+
+    For part 2, I ended up at rank 114, because I wasted some time trying to implement CSP in Ruby myself. I shouldn’t have done it since implementing something like this is a limited time is very bug prone for me and I got into an infinite loop.
+
+    ```js
+    // Part 2
+    const csp = require('js-csp')
+    const code = INPUT.split(/\n/).map(a => a.trim().split(/\s+/))
+
+    function * prog (p, inbox, outbox) {
+      const d = { p }
+      const get = k => k.match(/\d/) ? +k : (d[k] || 0)
+      let i
+      let sent = 0
+      const report = () => {
+        console.log({ i, d }, code[i])
+      }
+      for (i = 0; (report(), i < code.length); i++) {
+        const c = code[i]
+        if (c[0] === 'snd') {
+          sent += 1
+          const val = get(c[1])
+          console.log('Program', p, 'sent', val, 'from', c[1], 'total', sent, 'time(s)')
+          yield csp.put(outbox, val)
+          continue
+        }
+        if (c[0] === 'rcv') {
+          const  val = yield csp.take(inbox)
+          d[c[1]] = val
+          console.log(p, 'recv', val, c[1])
+          continue
+        }
+        if (c[0] === 'set') {
+          d[c[1]] = get(c[2])
+          continue
+        }
+        if (c[0] === 'add') {
+          d[c[1]] += get(c[2])
+          continue
+        }
+        if (c[0] === 'mul') {
+          d[c[1]] *= get(c[2])
+          continue
+        }
+        if (c[0] === 'mod') {
+          d[c[1]] %= get(c[2])
+          continue
+        }
+        if (c[0] === 'jgz') {
+          if (get(c[1]) > 0) {
+            i -= 1
+            i += get(c[2])
+          }
+          continue
+        }
+      }
+    }
+
+    const m0 = csp.chan(99999999)
+    const m1 = csp.chan(99999999)
+    csp.go(function * () { yield * prog(0, m0, m1) })
+    csp.go(function * () { yield * prog(1, m1, m0) })
+    ```
