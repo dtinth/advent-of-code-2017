@@ -349,3 +349,52 @@
     csp.go(function * () { yield * prog(0, m0, m1) })
     csp.go(function * () { yield * prog(1, m1, m0) })
     ```
+
+19. **A Series of Tubes**
+
+    ```ruby
+    # Both part 1 and part 2
+    IN = `pbpaste`
+
+    maze = {}
+    start = nil
+    IN.lines.each_with_index { |v, i|
+      v.chars.each_with_index { |c, j|
+        if c =~ /[A-Z]/
+          if i == 0
+            start = [i, j]
+          end
+          maze[[i, j]] = c
+        elsif c =~ /\S/
+          if i == 0
+            start = [i, j]
+          end
+          maze[[i, j]] = '!'
+        end
+      }
+    }
+
+    direction = [0, 1]
+
+    cur = start.dup
+    rl = -> d { [d[1], -d[0]] }
+    rr = -> d { [-d[1], d[0]] }
+    nx = -> c, d { [c[0] + d[0], c[1] + d[1]] }
+    nn = 0
+    loop {
+      break if !maze[cur]
+      # p cur
+      nn += 1
+      print maze[cur] if maze[cur] != '!'
+      if !maze[nx[cur, direction]]
+        if maze[nx[cur, rl[direction]]]
+          direction = rl[direction]
+        elsif maze[nx[cur, rr[direction]]]
+          direction = rr[direction]
+        end
+      end
+      cur = nx[cur, direction]
+    }
+    puts
+    puts nn
+    ```
