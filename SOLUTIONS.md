@@ -1,4 +1,4 @@
-**Ruby REPL** (irb) solution. The `pbpaste` command must be available in the `$PATH`, and should return the contents in the clipboard (macOS has this command by default).
+Please read the repository description.
 
 1. **Inverse Captcha**
 
@@ -397,4 +397,25 @@
     }
     puts
     puts nn
+    ```
+
+20. **Particle Swarm**
+
+    I messed up in the second part, because I didn’t adjust the velocity _before_ adjusting the position. While this doesn’t have any effect in part 1, in part 2, it causes the particles to not collide at all.
+
+    ```ruby
+    # Data loading
+    particles = `pbpaste`.lines.map { |l| l.scan(/-?\d+/).map(&:to_i).each_slice(3).to_a }
+
+    # Calculating the particle state
+    nx = -> ps { ps.map { |(x,y,z),(vx,vy,vz),(ax,ay,az)| vx+=ax;vy+=ay;vz+=az;[[x+vx,y+vy,z+vz],[vx,vy,vz],[ax,ay,az]] } }
+
+    # Start simulation
+    c = particles
+
+    # Part 1 (keep running this until answer stops changing)
+    500.times { c = nx[c] }; c.map { |(x,y,z),v,a| (x.abs+y.abs+z.abs).abs }.each_with_index.min
+
+    # Part 2 (keep running this until answer stops changing)
+    500.times { c = nx[c]; d = Hash.new(0); c.each { |s,v,a| d[s] += 1 }; c.reject! { |s,v,a| d[s] > 1 } }; c.length
     ```
