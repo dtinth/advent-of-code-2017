@@ -419,3 +419,30 @@ Please read the repository description.
     # Part 2 (keep running this until answer stops changing)
     500.times { c = nx[c]; d = Hash.new(0); c.each { |s,v,a| d[s] += 1 }; c.reject! { |s,v,a| d[s] > 1 } }; c.length
     ```
+
+21. **Fractal Art**
+
+    ```ruby
+    # Loading the rulebook
+    IN = `pbpaste`
+    rules = {}; IN.scan(/(\S+) => (\S+)/).map { |a, b| [a.split('/'), b.split('/')] }.each { |a, b| rules[a] = b }; rules
+
+    # Initial state and algorithm for flipping and rotating.
+    data = ['.#.', '..#', '###']
+    flip = -> m { m.reverse }
+    flip2 = -> m { m.map(&:reverse) }
+    flip3 = -> m { m.reverse.map(&:reverse) }
+    flip4 = -> m { m.map(&:chars).transpose.map(&:join) }
+    flip5 = -> m { m.map(&:chars).transpose.map(&:join).reverse }
+    flip6 = -> m { m.map(&:chars).transpose.map(&:join).map(&:reverse) }
+    flip7 = -> m { m.map(&:chars).transpose.map(&:join).map(&:reverse).reverse }
+
+    # Logic to enhance the pattern
+    nx = -> m { pz = m.length.even? ? 2 : 3; l = m.length / pz; (0...l).map { |i| (0...l).map { |j| inp = (0...pz).map { |k| (0...pz).map { |l| m[k+i*pz][l+j*pz] }.join }; rules[inp] || rules[flip[inp]] || rules[flip2[inp]] || rules[flip3[inp]] || rules[flip4[inp]] || rules[flip5[inp]] || rules[flip6[inp]] || rules[flip7[inp]] }.transpose.map(&:join) }.flatten(1) }
+
+    # Part 1
+    puts nx[nx[nx[nx[nx[data]]]]].join.count('#')
+
+    # Part 2
+    puts nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[data]]]]]]]]]]]]]]]]]].join.count('#')
+    ```
