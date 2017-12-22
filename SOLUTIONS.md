@@ -446,3 +446,27 @@ Please read the repository description.
     # Part 2
     puts nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[nx[data]]]]]]]]]]]]]]]]]].join.count('#')
     ```
+
+22. **Sporifica Virus**
+
+    ```ruby
+    # Loading the map (also setting the initial position to the centre)
+    input = `pbpaste`; initial_map = {}; input.lines.each_with_index { |l, i| l.strip.chars.each_with_index { |c, j| initial_map[[i,j]] = '#' if c == '#' } }; initial_pos = [input.strip.lines.length / 2, input.lines.first.strip.length / 2]
+
+    # Utility functions for turning left/right
+    rl = -> d { [-d[1], d[0]] }
+    rr = -> d { [d[1], -d[0]] }
+
+    # Initialize/reset simulation state
+    map = initial_map.dup; pos = initial_pos.dup; direction = [-1, 0]; infect = 0
+
+    # Part 1
+    10000.times { if map[pos]; direction = rr[direction]; map.delete(pos); else; direction = rl[direction]; map[pos] = '#'; infect += 1; end; pos = [pos[0] + direction[0], pos[1] + direction[1]] }; infect
+
+    # Part 2 (inline logic refactored into procs for easier editing)
+    handle_clean = -> { direction = rl[direction]; map[pos] = 'W' }
+    handle_weakened = -> { map[pos] = '#'; infect += 1 }
+    handle_infected = -> { direction = rr[direction]; map[pos] = 'F' }
+    handle_flagged = -> { direction = rr[rr[direction]]; map.delete(pos) }
+    10000000.times { |nn| puts nn if nn % 100000 == 0; (case map[pos]; when '#'; handle_infected; when 'F'; handle_flagged; when 'W'; handle_weakened; else; handle_clean; end)[]; pos = [pos[0] + direction[0], pos[1] + direction[1]] }; infect
+    ```
