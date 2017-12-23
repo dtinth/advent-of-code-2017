@@ -470,3 +470,9 @@ Please read the repository description.
     handle_flagged = -> { direction = rr[rr[direction]]; map.delete(pos) }
     10000000.times { |nn| puts nn if nn % 100000 == 0; (case map[pos]; when '#'; handle_infected; when 'F'; handle_flagged; when 'W'; handle_weakened; else; handle_clean; end)[]; pos = [pos[0] + direction[0], pos[1] + direction[1]] }; infect
     ```
+
+23. **Coprocessor Conflagration**
+
+    First part, I just copied the JS code and make a few modifications!
+
+    Second part, haven’t figured that out yet. :(
