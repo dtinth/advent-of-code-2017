@@ -476,3 +476,17 @@ Please read the repository description.
     First part, I just copied the JS code and make a few modifications!
 
     Second part, haven’t figured that out yet. :(
+
+24. **Electromagnetic Moat**
+
+    ```ruby
+    # Loading input
+    input = `pbpaste`
+    connectors = input.lines.each_with_index.map { |l, i| [i, *l.strip.split('/').map(&:to_i)] }
+    nodes = {}; connect = -> f, t, id { node = (nodes[f] ||= []); node << [t, id] }; connectors.each { |i, j, k| connect[j, k, i]; connect[k, j, i] if k != j }; nodes
+
+    # Solving part 1
+    visited = {}; path = []; sum = 0; max = 0; traverse = -> c { p [[*path, c], sum]; max = sum if sum > max; node = nodes[c]; return unless node; node.each { |t, i| unless visited[i]; val = connectors[i][1] + connectors[i][2]; sum += val; path << i; visited[i] = true; traverse[t]; path.pop; visited[i] = false; sum -= val; end; } }; traverse[0]; max
+    ```
+
+    Part 2 didn’t finish yet.
