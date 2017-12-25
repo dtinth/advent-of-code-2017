@@ -490,3 +490,28 @@ Please read the repository description.
     ```
 
     Part 2 didn’t finish yet.
+
+25. **The Halting Problem**
+
+    ```ruby
+    # First, I manually converted the input into a state transition
+    # table manually.
+    transition = {
+      :a => { 0 => [ 1, :right, :b ], 1 => [ 0, :left, :b ] },
+      :b => { 0 => [ 1, :left, :a ], 1 => [ 1, :right, :a ] },
+    }
+
+    # This runs the turing machine
+    state = :a; tape = Hash.new(0); pointer = 0
+    6.times { |i|
+      instruction = transition[state][tape[pointer]]
+      tape[pointer] = instruction[0]
+      pointer += instruction[1] == :left ? -1 : 1
+      state = instruction[2]
+    }
+
+    # Part 1: This computes the checksum
+    tape.values.count(1)
+    ```
+
+    Don’t have enough stars for part 2 yet...
